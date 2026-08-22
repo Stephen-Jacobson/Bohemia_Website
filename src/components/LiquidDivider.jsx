@@ -45,20 +45,14 @@ export default function LiquidDivider() {
         </defs>
       </svg>
 
-      {/* the Hero's own background photo, spilling down into the wave,
-          clipped to the blob shape and treated exactly like the Hero bg */}
-      <div
-        className="liquid-divider__bg"
-        style={{ backgroundImage: `url(${crowdBg})` }}
-      />
-      <div className="liquid-divider__scrim" />
-
+      {/* soft rust-toned shadow layer, behind everything else — offset in
+          phase from the front wave so it only peeks out past its edges,
+          never showing through the opaque photo on top of it */}
       <svg
-        className="liquid-divider__svg"
+        className="liquid-divider__shadow-svg"
         viewBox="0 0 1440 200"
         preserveAspectRatio="none"
       >
-        {/* soft rust-toned shadow layer, offset in phase for a layered liquid feel */}
         <path className="liquid-divider__shadow" d={WAVE_A}>
           <animate
             attributeName="d"
@@ -71,6 +65,22 @@ export default function LiquidDivider() {
             keyTimes="0; 0.33; 0.66; 1"
           />
         </path>
+      </svg>
+
+      {/* the Hero's own background photo, spilling down into the wave,
+          clipped to the blob shape and treated exactly like the Hero bg —
+          this is the front wave, fully opaque, sitting above the shadow */}
+      <div
+        className="liquid-divider__bg"
+        style={{ backgroundImage: `url(${crowdBg})` }}
+      />
+      <div className="liquid-divider__scrim" />
+
+      <svg
+        className="liquid-divider__svg"
+        viewBox="0 0 1440 200"
+        preserveAspectRatio="none"
+      >
         {/* red/rust duotone tint over the clipped photo — same treatment as
             the About showcase image, so the photo reads bright orange while
             still showing through */}

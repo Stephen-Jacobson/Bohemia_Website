@@ -1,0 +1,117 @@
+.gigs {
+  padding: 110px 0;
+  background: var(--black-soft);
+  border-top: 1px solid rgba(236, 227, 210, 0.1);
+  border-bottom: 1px solid rgba(236, 227, 210, 0.1);
+  position: relative;
+}
+
+.gigs__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+}
+
+.gigs__heading {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  margin-top: 10px;
+  color: var(--paper);
+}
+
+.gigs__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.gig-card {
+  position: relative;
+  display: block;
+  padding: 34px 30px 30px;
+  background: var(--black);
+  border: 1px solid rgba(236, 227, 210, 0.14);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gig-card:nth-child(even) {
+  transform: rotate(0.6deg);
+}
+.gig-card:nth-child(odd) {
+  transform: rotate(-0.6deg);
+}
+
+.gig-card:hover {
+  transform: translateY(-6px) rotate(0deg);
+  border-color: var(--red);
+  box-shadow: 8px 10px 0 rgba(194, 52, 31, 0.25);
+}
+
+.gig-card__tag {
+  position: absolute;
+  top: -12px;
+  left: 28px;
+  background: var(--red);
+  color: var(--paper);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+}
+
+.gig-card__date {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mustard);
+  margin-bottom: 14px;
+}
+
+.gig-card__title {
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  color: var(--paper);
+  margin-bottom: 10px;
+}
+
+.gig-card__bands {
+  font-size: 0.86rem;
+  color: var(--paper);
+  opacity: 0.85;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.gig-card__detail {
+  font-size: 0.8rem;
+  color: var(--paper-dim);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.gig-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  font-weight: 700;
+}
+
+.gig-card__cta span {
+  transition: transform 0.2s ease;
+}
+
+.gig-card:hover .gig-card__cta span {
+  transform: translateX(4px);
+}
+
+@media (max-width: 780px) {
+  .gigs__list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,66 @@
+.liquid-divider {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: clamp(90px, 14vw, 170px);
+  margin-top: -1px; /* seams the top edge flush against the Hero, no gap */
+  margin-bottom: clamp(-64px, -8vw, -110px);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.liquid-divider__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.liquid-divider__bg {
+  position: absolute;
+  inset: 0;
+  background-image: none;
+  background-size: cover;
+  background-position: center 78%;
+  filter: blur(6px) grayscale(0.25) brightness(0.5) contrast(1.15);
+  transform: scale(1.08);
+  clip-path: url(#liquid-clip);
+}
+
+.liquid-divider__scrim {
+  position: absolute;
+  inset: 0;
+  clip-path: url(#liquid-clip);
+  background: linear-gradient(
+    180deg,
+    rgba(10, 9, 8, 0.95) 0%,
+    rgba(10, 9, 8, 0.55) 40%,
+    rgba(10, 9, 8, 0.1) 100%
+  );
+}
+
+.liquid-divider__svg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.liquid-divider__tint {
+  fill: var(--red);
+  mix-blend-mode: color;
+  opacity: 0.85;
+}
+
+.liquid-divider__shadow {
+  fill: var(--rust);
+  opacity: 0.05;
+  transform: translateY(14px);
+  filter: blur(6px);
+}
+
+@media (max-width: 700px) {
+  .liquid-divider {
+    height: clamp(64px, 20vw, 110px);
+    margin-bottom: clamp(-40px, -12vw, -60px);
+  }
+}

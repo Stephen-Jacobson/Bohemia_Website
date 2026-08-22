@@ -1,0 +1,129 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 150px 0 90px;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.hero__bg {
+  position: absolute;
+  inset: -30px;
+  background-size: cover;
+  background-position: center 30%;
+  filter: blur(6px) grayscale(0.25) brightness(0.5) contrast(1.15);
+  transform: scale(1.05);
+  z-index: 0;
+}
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(10, 9, 8, 0.55) 0%, rgba(10, 9, 8, 0.72) 45%, rgba(10, 9, 8, 0.94) 100%),
+    radial-gradient(ellipse 70% 55% at 18% 40%, rgba(10, 9, 8, 0.35), transparent 60%);
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero__eyebrow {
+  margin-bottom: 22px;
+}
+
+.hero__title {
+  line-height: 0.88;
+}
+
+.hero__title-line {
+  display: block;
+  font-size: clamp(1.2rem, 3vw, 1.9rem);
+  letter-spacing: 0.04em;
+  color: var(--paper-dim);
+  margin-bottom: 10px;
+}
+
+.hero__title-line--big {
+  font-size: clamp(3.6rem, 13vw, 9.5rem);
+  color: var(--paper);
+}
+
+.hero__title-line--big em {
+  font-style: normal;
+  color: var(--red);
+  display: inline-block;
+  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.6);
+}
+
+.hero__sub {
+  max-width: 44ch;
+  margin: 30px 0 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--paper-dim);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.hero__note {
+  margin-top: 26px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mustard-dim);
+}
+
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: var(--paper-dim);
+  z-index: 2;
+}
+
+.hero__scroll span {
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(180deg, var(--red), transparent);
+  animation: scrolldrop 1.8s ease-in-out infinite;
+}
+
+@keyframes scrolldrop {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.4);
+    transform-origin: top;
+  }
+  40% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(0.4);
+    transform-origin: bottom;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding-top: 130px;
+  }
+}

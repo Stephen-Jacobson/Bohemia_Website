@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "postinstall": "playwright install chromium",
+    "fetch:gigs": "node scripts/fetch-gigs.mjs",
+    "prebuild": "npm run fetch:gigs",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
@@ -18,6 +21,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
     "oxlint": "^1.75.0",
+    "playwright": "^1.48.0",
     "vite": "^8.2.0"
   }
 }

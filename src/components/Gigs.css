@@ -21,16 +21,50 @@
   color: var(--paper);
 }
 
-.gigs__list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+/* Side-scrolling gig list. justify-content: center means a short list
+   (1-2 cards) sits centered with room to breathe on both sides; once the
+   track is wider than the viewport it naturally overflows and scrolls
+   left-aligned, so this works the same whether there's 1 event or 10. */
+.gigs__scroller {
+  margin: 0 -24px;
+  padding: 18px 24px 30px;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--red) transparent;
+}
+
+.gigs__scroller::-webkit-scrollbar {
+  height: 8px;
+}
+.gigs__scroller::-webkit-scrollbar-track {
+  background: rgba(236, 227, 210, 0.08);
+}
+.gigs__scroller::-webkit-scrollbar-thumb {
+  background: var(--red);
+}
+
+.gigs__track {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  min-width: 100%;
+  width: max-content;
+  max-width: none;
 }
 
 .gig-card {
   position: relative;
-  display: block;
-  padding: 34px 30px 30px;
+  display: flex;
+  overflow: hidden;
+  isolation: isolate;
+  width: min(90vw, 560px);
+  min-height: 460px;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  padding: 46px 38px 34px;
   background: var(--black);
   border: 1px solid rgba(236, 227, 210, 0.14);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
@@ -49,10 +83,39 @@
   box-shadow: 8px 10px 0 rgba(194, 52, 31, 0.25);
 }
 
+.gig-card__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-size: cover;
+  background-position: center;
+  filter: blur(3px) brightness(0.5) saturate(1.15);
+  transform: scale(1.25);
+}
+
+.gig-card__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 9, 8, 0.6) 0%,
+    rgba(10, 9, 8, 0.8) 55%,
+    rgba(10, 9, 8, 0.94) 100%
+  );
+}
+
+.gig-card__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .gig-card__tag {
   position: absolute;
-  top: -12px;
-  left: 28px;
+  top: -46px;
+  left: -8px;
   background: var(--red);
   color: var(--paper);
   font-size: 0.65rem;
@@ -67,39 +130,44 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--mustard);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .gig-card__title {
-  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  line-height: 1.12;
   color: var(--paper);
-  margin-bottom: 10px;
+  margin-bottom: 14px;
+  overflow-wrap: break-word;
 }
 
 .gig-card__bands {
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   color: var(--paper);
-  opacity: 0.85;
-  margin-bottom: 10px;
-  line-height: 1.5;
+  opacity: 0.92;
+  margin-bottom: 12px;
+  line-height: 1.55;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .gig-card__detail {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--paper-dim);
-  line-height: 1.6;
-  margin-bottom: 22px;
+  line-height: 1.65;
+  margin-bottom: 26px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .gig-card__cta {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--red-bright);
   font-weight: 700;
+  margin-top: auto;
 }
 
 .gig-card__cta span {
@@ -111,7 +179,18 @@
 }
 
 @media (max-width: 780px) {
-  .gigs__list {
-    grid-template-columns: 1fr;
+  .gigs__scroller {
+    margin: 0 -20px;
+    padding: 18px 20px 24px;
+  }
+
+  .gigs__track {
+    justify-content: flex-start;
+  }
+
+  .gig-card {
+    width: 88vw;
+    min-height: 420px;
+    padding: 40px 28px 28px;
   }
 }

@@ -13,7 +13,7 @@
   inset: -30px;
   background-size: cover;
   background-position: center 30%;
-  filter: blur(6px) grayscale(0.25) brightness(0.5) contrast(1.15);
+  filter: blur(3px) grayscale(0.25) brightness(0.6) contrast(1.15);
   transform: scale(1.05);
   z-index: 0;
 }

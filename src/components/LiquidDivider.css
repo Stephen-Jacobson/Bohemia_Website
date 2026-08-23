@@ -2,7 +2,7 @@
   position: relative;
   z-index: 5;
   width: 100%;
-  height: clamp(90px, 14vw, 170px);
+  height: clamp(90px, 5vw, 170px);
   margin-top: -1px; /* seams the top edge flush against the Hero, no gap */
   margin-bottom: clamp(-64px, -8vw, -110px);
   pointer-events: none;
@@ -23,7 +23,7 @@
   background-image: none;
   background-size: cover;
   background-position: center 78%;
-  filter: blur(6px) grayscale(0.25) brightness(0.5) contrast(1.15);
+  filter: blur(12px) grayscale(0.4) brightness(0.3) contrast(1.15);
   transform: scale(1.08);
   clip-path: url(#liquid-clip);
 }

@@ -1,25 +1,12 @@
 import "./Gigs.css";
+import GIGS from "../data/gigs.json";
 
-const GIGS = [
-  {
-    tag: "Next up",
-    date: "Thu 30 Apr",
-    title: "Bohemia Rumble",
-    bands: "Black Math · Man Motels · Cistamatic · Under Arrest",
-    detail: "Happy hour 18:00–20:00, thanks to Stella Artois. Tickets R100.",
-    href: "https://www.quicket.co.za/events/368090-bohemia-rumble-black-math-man-motels-cistamatic-under-arrest-live-at-bohemia-st/",
-    cta: "Get Tickets",
-  },
-  {
-    tag: "Weekly",
-    date: "Every Thursday",
-    title: "Rock Night",
-    bands: "Local & touring bands on the Bohemia stage",
-    detail: "Doors open early, floor clears out late. Line-up drops on Instagram.",
-    href: "https://www.instagram.com/bohemia_stb/?hl=en",
-    cta: "Check Line-up",
-  },
-];
+// Event data lives in src/data/gigs.json, which is regenerated at build
+// time by scripts/fetch-gigs.mjs (scraping Bohemia's Quicket organiser
+// page — see that script for why this can't happen live in the browser).
+// The card list below is driven entirely by that array's length, so
+// however many events Quicket has live at build time, that many cards
+// render here automatically.
 
 export default function Gigs() {
   return (
@@ -40,26 +27,38 @@ export default function Gigs() {
           </a>
         </div>
 
-        <div className="gigs__list">
-          {GIGS.map((g, i) => (
-            <a
-              className="gig-card"
-              href={g.href}
-              target="_blank"
-              rel="noreferrer"
-              key={g.title}
-              style={{ "--i": i }}
-            >
-              <span className="gig-card__tag">{g.tag}</span>
-              <span className="gig-card__date">{g.date}</span>
-              <h3 className="gig-card__title">{g.title}</h3>
-              <p className="gig-card__bands">{g.bands}</p>
-              <p className="gig-card__detail">{g.detail}</p>
-              <span className="gig-card__cta">
-                {g.cta} <span aria-hidden="true">&rarr;</span>
-              </span>
-            </a>
-          ))}
+        <div className="gigs__scroller">
+          <div className="gigs__track">
+            {GIGS.map((g, i) => (
+              <a
+                className="gig-card"
+                href={g.href}
+                target="_blank"
+                rel="noreferrer"
+                key={g.title}
+                style={{ "--i": i }}
+              >
+                {g.image && (
+                  <span
+                    className="gig-card__bg"
+                    style={{ backgroundImage: `url(${g.image})` }}
+                    aria-hidden="true"
+                  />
+                )}
+                <span className="gig-card__scrim" aria-hidden="true" />
+                <span className="gig-card__content">
+                  <span className="gig-card__tag">{g.tag}</span>
+                  <span className="gig-card__date">{g.date}</span>
+                  <h3 className="gig-card__title">{g.title}</h3>
+                  <p className="gig-card__bands">{g.bands}</p>
+                  <p className="gig-card__detail">{g.detail}</p>
+                  <span className="gig-card__cta">
+                    {g.cta} <span aria-hidden="true">&rarr;</span>
+                  </span>
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>

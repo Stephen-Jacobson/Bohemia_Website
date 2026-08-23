@@ -2,24 +2,19 @@ import "./Specials.css";
 
 const SPECIALS = [
   {
-    time: "19:00 – 21:00, daily",
+    time: "16:00 – 19:00, daily",
     name: "Happy Hour",
     detail: "Discounted drinks every night of the week.",
   },
   {
-    time: "11:00–17:00 Mon–Sat · 12:00–17:00 Sun",
+    time: "11:00 – 16:00, daily",
     name: "Lunch Special",
-    detail: "Discounted food off the lunch menu, every day.",
+    detail: "R100 - 2x Beef Burgers.\n R50 - Chicken Strips and Chips.",
   },
   {
     time: "Sundays",
     name: "Pizza Special",
-    detail: "Regulars rate this as one of the best-value pizza nights in town.",
-  },
-  {
-    time: "Rotating",
-    name: "Buy 1 Get 1 Free Noodle Dishes",
-    detail: "Keep an eye on the board — this one comes and goes.",
+    detail: "R85 - Delicious discounted pizza. A Stellenbosch Favourite",
   },
 ];
 
@@ -36,7 +31,7 @@ export default function Specials() {
               <span className="specials__time">{s.time}</span>
               <div className="specials__row-copy">
                 <h3>{s.name}</h3>
-                <p>{s.detail}</p>
+                <p style={{ whiteSpace: "pre-line" }}>{s.detail}</p>
               </div>
             </div>
           ))}

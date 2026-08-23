@@ -136,7 +136,19 @@
 
 @media (max-width: 700px) {
   .bingo__mascot {
-    display: none;
+    left: -4px;
+    bottom: -40px;
+    height: 68%;
+    max-width: 130px;
+  }
+}
+
+@media (max-width: 460px) {
+  .bingo__mascot {
+    left: -2px;
+    bottom: -28px;
+    height: 60%;
+    max-width: 105px;
   }
 }
 

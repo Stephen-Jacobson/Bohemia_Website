@@ -193,4 +193,8 @@
     min-height: 420px;
     padding: 40px 28px 28px;
   }
+
+  .gig-card__tag {
+    top: -40px;
+  }
 }

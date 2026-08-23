@@ -134,7 +134,7 @@
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 410px) {
   .bingo__mascot {
     left: -4px;
     bottom: -40px;
@@ -143,12 +143,18 @@
   }
 }
 
-@media (max-width: 460px) {
+@media (max-width: 100px) {
   .bingo__mascot {
     left: -2px;
     bottom: -28px;
     height: 60%;
     max-width: 105px;
+  }
+}
+
+@media (max-width: 410px) {
+  .bingo__mascot {
+    display: none;
   }
 }
 

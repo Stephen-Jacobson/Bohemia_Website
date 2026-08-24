@@ -31,9 +31,23 @@
   overflow-x: auto;
   overflow-y: visible;
   scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: var(--red) transparent;
+  cursor: grab;
+}
+
+.gigs__scroller--dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.gigs__scroller--dragging .gig-card {
+  transition: none;
 }
 
 .gigs__scroller::-webkit-scrollbar {

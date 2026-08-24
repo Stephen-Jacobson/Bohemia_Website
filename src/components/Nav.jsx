@@ -22,7 +22,10 @@ export default function Nav() {
     <header className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
       <div className="nav__inner wrap">
         <a href="#top" className="nav__mark">
-          BOHEMI<span>A</span>
+          <span className="nav__mark-word">
+            BOHEMI<span>A</span>
+          </span>
+          <span className="nav__mark-est">Est. 2001</span>
         </a>
 
         <nav className="nav__links">

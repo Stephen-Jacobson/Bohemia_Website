@@ -13,7 +13,7 @@
   inset: -30px;
   background-size: cover;
   background-position: center 30%;
-  filter: blur(3px) grayscale(0.25) brightness(0.6) contrast(1.15);
+  filter: blur(3px) grayscale(0.25) brightness(0.8) contrast(1.15);
   transform: scale(1.05);
   z-index: 0;
 }
@@ -58,6 +58,14 @@
   color: var(--red);
   display: inline-block;
   text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.6);
+}
+
+.hero__est {
+  margin: 8px 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--mustard-dim);
 }
 
 .hero__sub {

@@ -16,6 +16,14 @@
   overflow: hidden;
   background: var(--black-soft);
   box-shadow: inset 0 0 0 1px rgba(236, 227, 210, 0.1);
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.showcase__frame--dragging {
+  cursor: grabbing;
 }
 
 .showcase__img {
@@ -29,6 +37,8 @@
   transform: scale(1.02);
   opacity: 0;
   transition: opacity 1.1s ease;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .showcase__img--active {
@@ -55,6 +65,24 @@
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: 120px 120px;
+}
+
+.showcase__drag-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.showcase__drag-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+  will-change: transform;
 }
 
 .showcase__vignette {
@@ -104,24 +132,33 @@
   bottom: clamp(18px, 3vw, 30px);
   z-index: 5;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: rgba(10, 9, 8, 0.4);
+  backdrop-filter: blur(6px);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(236, 227, 210, 0.12);
 }
 
 .showcase__dot {
-  width: 9px;
-  height: 9px;
+  width: 7px;
+  height: 7px;
   padding: 0;
-  border: 1px solid rgba(236, 227, 210, 0.5);
-  border-radius: 50%;
-  background: rgba(10, 9, 8, 0.4);
+  border: none;
+  border-radius: 999px;
+  background: rgba(236, 227, 210, 0.4);
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition: width 0.35s ease, background 0.25s ease, opacity 0.25s ease;
+}
+
+.showcase__dot:hover:not(.showcase__dot--active) {
+  background: rgba(236, 227, 210, 0.7);
 }
 
 .showcase__dot--active {
+  width: 24px;
   background: var(--red-bright);
-  border-color: var(--red-bright);
-  transform: scale(1.2);
 }
 
 .sticker {

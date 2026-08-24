@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import "./Gigs.css";
 import GIGS from "../data/gigs.json";
 
@@ -8,7 +9,67 @@ import GIGS from "../data/gigs.json";
 // however many events Quicket has live at build time, that many cards
 // render here automatically.
 
+const DRAG_CLICK_THRESHOLD = 6; // px — beyond this, treat it as a drag, not a click on a card
+
 export default function Gigs() {
+  const scrollerRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragState = useRef({ startX: 0, startScrollLeft: 0, moved: false });
+
+  const handlePointerDown = (e) => {
+    // Touch/pen already get native scrolling via overflow-x + touch-action;
+    // this is purely to give mouse users click-and-drag scrolling too.
+    if (e.pointerType !== "mouse") return;
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    dragState.current = {
+      startX: e.clientX,
+      startScrollLeft: scroller.scrollLeft,
+      moved: false,
+    };
+    setIsDragging(true);
+    // Deliberately NOT using setPointerCapture here — capturing the
+    // pointer on the scroller causes the browser to redirect the
+    // resulting `click` event to the scroller itself instead of the card
+    // underneath, which is what was breaking card links. Plain window
+    // listeners (below) track the drag just as reliably without that
+    // side effect.
+  };
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleMove = (e) => {
+      const scroller = scrollerRef.current;
+      if (!scroller) return;
+      const dx = e.clientX - dragState.current.startX;
+      if (Math.abs(dx) > DRAG_CLICK_THRESHOLD) dragState.current.moved = true;
+      scroller.scrollLeft = dragState.current.startScrollLeft - dx;
+    };
+
+    const handleUp = () => setIsDragging(false);
+
+    window.addEventListener("pointermove", handleMove);
+    window.addEventListener("pointerup", handleUp);
+    window.addEventListener("pointercancel", handleUp);
+    window.addEventListener("blur", handleUp);
+    return () => {
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerup", handleUp);
+      window.removeEventListener("pointercancel", handleUp);
+      window.removeEventListener("blur", handleUp);
+    };
+  }, [isDragging]);
+
+  // Cards are <a> tags — a click fires right after pointerup on the same
+  // element, so if the pointer actually moved we swallow that click here
+  // rather than letting a drag-release accidentally open a link.
+  const handleCardClick = (e) => {
+    if (dragState.current.moved) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <section className="gigs" id="gigs">
       <div className="wrap">
@@ -27,7 +88,11 @@ export default function Gigs() {
           </a>
         </div>
 
-        <div className="gigs__scroller">
+        <div
+          className={"gigs__scroller" + (isDragging ? " gigs__scroller--dragging" : "")}
+          ref={scrollerRef}
+          onPointerDown={handlePointerDown}
+        >
           <div className="gigs__track">
             {GIGS.map((g, i) => (
               <a
@@ -35,8 +100,11 @@ export default function Gigs() {
                 href={g.href}
                 target="_blank"
                 rel="noreferrer"
-                key={g.title}
+                key={`${g.title}-${i}`}
                 style={{ "--i": i }}
+                draggable={false}
+                onDragStart={(e) => e.preventDefault()}
+                onClick={handleCardClick}
               >
                 {g.image && (
                   <span

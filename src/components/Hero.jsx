@@ -21,6 +21,8 @@ export default function Hero() {
           </span>
         </h1>
 
+        <p className="hero__est">Est. 2001</p>
+
         <p className="hero__sub">
           Bar. Restaurant. Live bands. Wood-fired pizza. Specials. Bingo every Sunday
           at 6pm.
@@ -30,12 +32,7 @@ export default function Hero() {
           <a href="#gigs" className="btn btn-solid">
             See What's On
           </a>
-          <a
-            href="https://web.whatsapp.com/send?phone=27684634718"
-            target="_blank"
-            rel="noreferrer"
-            className="btn"
-          >
+          <a href="tel:+27210071219" className="btn">
             Book a Table
           </a>
         </div>

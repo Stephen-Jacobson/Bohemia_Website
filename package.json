@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "postinstall": "playwright install chromium",
     "fetch:gigs": "node scripts/fetch-gigs.mjs",
-    "prebuild": "npm run fetch:gigs",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"

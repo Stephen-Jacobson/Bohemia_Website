@@ -1,0 +1,52 @@
+name: Update gigs.json
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # Re-scrape Quicket daily so the live-music list stays in sync,
+    # even with no code changes. Cloudflare Pages auto-deploys whenever
+    # this workflow commits an updated gigs.json.
+    - cron: "0 5 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-gigs
+  cancel-in-progress: true
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Fetch gigs
+        run: npm run fetch:gigs
+
+      - name: Commit updated gigs.json if changed
+        run: |
+          if ! git diff --quiet -- src/data/gigs.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add src/data/gigs.json
+            git commit -m "chore: update gigs.json [skip ci]"
+            git push
+          else
+            echo "No changes to gigs.json"
+          fi

@@ -26,27 +26,18 @@
 
 .nav__mark {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  font-family: var(--font-display);
+  align-items: center;
 }
 
-.nav__mark-word {
-  font-size: 1.4rem;
-  letter-spacing: 0.03em;
-  color: var(--paper);
+.nav__mark-logo {
+  height: 34px;
+  width: auto;
+  display: block;
+  transition: height 0.25s ease;
 }
 
-.nav__mark-word span {
-  color: var(--red);
-}
-
-.nav__mark-est {
-  font-size: 0.5rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--mustard-dim);
+.nav--scrolled .nav__mark-logo {
+  height: 28px;
 }
 
 .nav__links {

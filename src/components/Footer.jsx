@@ -1,13 +1,12 @@
 import "./Footer.css";
+import logo from "../assets/bohemia-name.png";
 
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="wrap footer__inner">
         <div className="footer__brand">
-          <div className="footer__mark">
-            BOHEMI<span>A</span>
-          </div>
+          <img src={logo} alt="Bohemia" className="footer__mark-logo" />
           <p className="footer__est">Est. 2001</p>
         </div>
 

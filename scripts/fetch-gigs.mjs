@@ -120,15 +120,38 @@ function extractEventIdsFromEmbeddedJson(html) {
 // silently — this is what shows up in the console/CI logs to help figure
 // out why the page's markup didn't match what we expected.
 function logDiagnostics(label, html) {
-  const hasChallenge =
-    /just a moment|checking your browser|cf-browser-verification|captcha/i.test(
-      html
-    );
+  const hasChallenge = pageLooksBlocked(html);
   const eventsMentions = (html.match(/\/events\//gi) || []).length;
   console.warn(
     `[fetch-gigs] Diagnostics for ${label}: length=${html.length}, ` +
       `possible bot-challenge=${hasChallenge}, "/events/" occurrences=${eventsMentions}`
   );
+}
+
+function pageLooksBlocked(html) {
+  return /just a moment|checking your browser|cf-browser-verification|captcha/i.test(
+    html
+  );
+}
+
+// Distinguishes "the organiser page rendered fine and there just aren't
+// any events right now" from "something went wrong (bot-block, layout
+// change, network hiccup, etc.)". Quicket always renders a
+// `"N upcoming event(s)"` heading inside an `event-list` section for a
+// working organiser page — including when N is 0 — so if we can see
+// that structural chrome (and it isn't a bot-challenge page), a
+// zero-event result is trustworthy rather than a broken scrape.
+function looksLikeLoadedOrganiserPage(html) {
+  if (pageLooksBlocked(html)) return false;
+  const hasEventListSection = /class=["']event-list["']/i.test(html);
+  const hasUpcomingHeading = /(\d+)\s+upcoming event/i.test(html);
+  const hasFollowButton = /l-secondary-button/i.test(html) || /app-follow/i.test(html);
+  // Require at least two independent signals so a truncated/odd page
+  // doesn't get misread as "confirmed empty".
+  const signals = [hasEventListSection, hasUpcomingHeading, hasFollowButton].filter(
+    Boolean
+  ).length;
+  return signals >= 2;
 }
 
 function metaContent(html, property) {
@@ -207,6 +230,7 @@ async function scrapeEvent(url) {
 
 async function main() {
   let gigs = [];
+  let confirmedEmpty = false;
 
   try {
     const organiserHtml = await fetchRenderedHtml(ORGANISER_URL);
@@ -222,34 +246,53 @@ async function main() {
       }
 
       logDiagnostics("organiser page", organiserHtml);
-      await writeFile(
-        path.join(__dirname, "../.debug-organiser.html"),
-        organiserHtml,
-        "utf-8"
-      ).catch(() => {});
-      console.warn(
-        "[fetch-gigs] Dumped rendered HTML to scripts/../.debug-organiser.html for inspection."
-      );
 
-      throw new Error("No event links found on organiser page.");
+      if (ids.length === 0 && looksLikeLoadedOrganiserPage(organiserHtml)) {
+        // The organiser page loaded correctly (we can see its normal
+        // chrome — the "N upcoming event(s)" heading, the event-list
+        // section, the Follow button) and it just doesn't list any
+        // events. This is a real "no gigs right now" state, not a
+        // failed scrape, so it's safe to clear gigs.json instead of
+        // leaving stale data behind.
+        console.log(
+          "[fetch-gigs] Organiser page loaded fine with 0 events — treating as confirmed empty."
+        );
+        gigs = [];
+        confirmedEmpty = true;
+      } else {
+        await writeFile(
+          path.join(__dirname, "../.debug-organiser.html"),
+          organiserHtml,
+          "utf-8"
+        ).catch(() => {});
+        console.warn(
+          "[fetch-gigs] Dumped rendered HTML to scripts/../.debug-organiser.html for inspection."
+        );
+
+        throw new Error(
+          "No event links found and organiser page didn't look fully loaded — assuming a failed scrape."
+        );
+      }
     }
 
-    gigs = await Promise.all(
-      eventUrls.map((url) =>
-        scrapeEvent(url).catch((err) => {
-          console.warn(`[fetch-gigs] Skipping ${url}: ${err.message}`);
-          return null;
-        })
-      )
-    ).then((results) => results.filter(Boolean));
+    if (!confirmedEmpty) {
+      gigs = await Promise.all(
+        eventUrls.map((url) =>
+          scrapeEvent(url).catch((err) => {
+            console.warn(`[fetch-gigs] Skipping ${url}: ${err.message}`);
+            return null;
+          })
+        )
+      ).then((results) => results.filter(Boolean));
 
-    // First card is styled as "Next up", rest as weekly/upcoming style.
-    gigs.forEach((g, i) => {
-      if (i > 0) g.tag = "Upcoming";
-    });
+      // First card is styled as "Next up", rest as weekly/upcoming style.
+      gigs.forEach((g, i) => {
+        if (i > 0) g.tag = "Upcoming";
+      });
 
-    if (gigs.length === 0) {
-      throw new Error("All event pages failed to parse.");
+      if (gigs.length === 0) {
+        throw new Error("All event pages failed to parse.");
+      }
     }
   } catch (err) {
     console.warn(

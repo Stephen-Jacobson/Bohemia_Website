@@ -88,6 +88,12 @@ export default function Gigs() {
           </a>
         </div>
 
+        {GIGS.length === 0 && (
+          <p className="gigs__empty">
+            No gigs on the calendar right now. <br></br> Check back soon.
+          </p>
+        )}
+
         <div
           className={"gigs__scroller" + (isDragging ? " gigs__scroller--dragging" : "")}
           ref={scrollerRef}

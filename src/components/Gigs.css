@@ -21,6 +21,13 @@
   color: var(--paper);
 }
 
+.gigs__empty {
+  color: var(--paper);
+  opacity: 0.65;
+  font-size: 1.05rem;
+  max-width: 46ch;
+}
+
 /* Side-scrolling gig list. justify-content: center means a short list
    (1-2 cards) sits centered with room to breathe on both sides; once the
    track is wider than the viewport it naturally overflows and scrolls

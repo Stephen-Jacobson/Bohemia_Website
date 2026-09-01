@@ -137,4 +137,4 @@ export default function Gigs() {
       </div>
     </section>
   );
-}
+} 

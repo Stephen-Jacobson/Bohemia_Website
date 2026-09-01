@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "fetch:gigs": "node scripts/fetch-gigs.mjs",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },
